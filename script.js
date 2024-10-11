@@ -168,20 +168,28 @@ class LinkedList {
       }
     }
     removeAt(index) {
-      if (index >= this.size()) {
-        throw new Error("this index is bigger than the list's size!");
-      } else {
-        let current = 0;
-        let currentNode = this.headNode;
-        let afterCurrentNode = this.headNode;
-        while (current < index - 1) {
-          current += 1;
-          currentNode = currentNode.nextNode;
-          afterCurrentNode = currentNode.nextNode;
+        if (index < 0 || index >= this.size()) {
+          throw new Error("this index is bigger than the list's size!");
+        } else if (index === 0) {
+          // Remove the head node
+          this.headNode = this.headNode.nextNode; // Move head to the next node
+          if (this.headNode === null) {
+            this.tailNode = null; // If the list is now empty, update the tail
+          }
+        } else {
+          let current = this.headNode;
+          for (let i = 0; i < index - 1; i++) {
+            current = current.nextNode; // Move to the node before the one to remove
+          }
+          // Remove the node at index
+          current.nextNode = current.nextNode ? current.nextNode.nextNode : null;
+      
+          // Update the tail if we removed the last node
+          if (current.nextNode === null) {
+            this.tailNode = current; // Update tail
+          }
         }
-        currentNode.nextNode = afterCurrentNode.nextNode;
       }
-    }
   }
   class Node {
     constructor() {
